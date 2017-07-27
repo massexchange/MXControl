@@ -1,0 +1,23 @@
+[
+    {
+        "time" : "00 45 7 * * 1-5",
+        "environment": "qa",
+        "action": "on"
+    },
+    {
+        "time" : "00 00 20 * * *",
+        "environment": "qa",
+        "action": "off"
+    },
+    {
+        "time" : "00 00 6 * * 1-5",
+        "instance": "MXBackend-example",
+        "action": "resize",
+        "size" : "m4.xlarge"
+    },
+    {
+        "time" :  "00 00 6 * * 1-5",
+        "database": "mxenvironment-example",
+        "action": "on"
+    }
+]

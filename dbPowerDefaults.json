@@ -1,0 +1,4 @@
+{
+	"dbDefaultUp":"db.m4.xlarge",
+	"dbDefaultDown":"db.t2.micro"
+}

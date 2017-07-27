@@ -1,0 +1,19 @@
+{
+  "name": "mxcontrol",
+  "version": "1.0.0",
+  "main": "cli.js",
+  "bin": {
+    "mxcontrol": "cli.js"
+  },
+  "author": "Frank Camilleri",
+  "dependencies": {
+    "aws-sdk": "^2.3.17",
+    "later": "^1.2.0",
+    "marked": "^0.3.6",
+    "marked-terminal": "^2.0.0",
+    "minimist": "^1.2.0",
+    "nconf": "^0.8.4",
+    "winston": "^2.2.0"
+  },
+  "preferGlobal": true
+}
