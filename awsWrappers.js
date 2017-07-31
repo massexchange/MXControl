@@ -1,6 +1,5 @@
 const AWS   = require("aws-sdk");
 const nconf = require("nconf");
-const log   = require("./logUtil.js").log;
 const util  = require("./mxcontrolUtil.js");
 
 const {downVerbs} = util.possibleActions;
@@ -10,8 +9,8 @@ const awsKey    = nconf.env().get("awsSecretAccessKey");
 const awsRegion = nconf.env().get("awsRegion");
 
 if (!(awsId && awsKey && awsRegion)){
-    log.error("AWS Credential Environment Variables are missing or malformed.");
-    log.error("Exiting.");
+    console.log("AWS Credential Environment Variables are missing or malformed.");
+    console.log("Exiting.");
     process.exit(1);
 }
 
