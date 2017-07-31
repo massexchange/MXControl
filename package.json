@@ -12,6 +12,7 @@
     "marked": "^0.3.6",
     "marked-terminal": "^2.0.0",
     "minimist": "^1.2.0",
+    "mxawswrappers": "file:../MXAWSWrappers",
     "nconf": "^0.8.4",
     "winston": "^2.2.0"
   },
