@@ -1,8 +1,6 @@
 const AWS   = require("aws-sdk");
 const nconf = require("nconf");
 
-const {downVerbs} = util.possibleActions;
-
 const awsId     = nconf.env().get("awsAccessKeyId");
 const awsKey    = nconf.env().get("awsSecretAccessKey");
 const awsRegion = nconf.env().get("awsRegion");
@@ -38,12 +36,6 @@ exports.awsWrappers = class awsWrappers{
     static waitForRDSInstanceAvailable(identifier){
         //yes you read that right. dB.
         return RDS.waitFor("dBInstanceAvailable",{"DBInstanceIdentifier":identifier}).promise();
-    }
-
-    //router for waits
-    static waitForEC2InstanceArrayAvailable(ec2InstIDArray, action){
-        if (downVerbs.has(action)) return this.waitForEC2InstanceArrayShutdown(ec2InstIDArray);
-        return this.waitForEC2InstanceArrayStartup(ec2InstIDArray);
     }
 
     static getEC2InstancesByEnvironment(environmentNameArray){

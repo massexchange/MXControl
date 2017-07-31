@@ -1,7 +1,7 @@
 const dbInfRC = "dbPowerDefaults.json";
 const namesRC = "instanceNamePrefixes.json";
 
-const aws   = require("./awsWrappers.js").awsWrappers;
+const aws   = require("mxawswrappers").awsWrappers;
 const util  = require("./mxcontrolUtil.js");
 const {log, logCatch} = require("./logUtil.js");
 
@@ -179,6 +179,11 @@ const getEC2IdArrayFromNameArray = (nameArray, EC2Instances) => {
         }, "");
     });
 };
+
+const waitForEC2InstanceArrayAvailable = (ec2InstIDArray, action) => {
+    if (downVerbs.has(action)) return aws.waitForEC2InstanceArrayShutdown(ec2InstIDArray);
+    return aws.waitForEC2InstanceArrayStartup(ec2InstIDArray);
+}
 
 //ASSUMES PREVALIDATION
 const doEC2ActionAndWait = async (targetIdArray, action, size) => {
