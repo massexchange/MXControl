@@ -202,7 +202,7 @@ const doEC2ActionAndWait = async (targetIdArray, action, size) => {
     }
 
     await mxaws.delay(10);
-    await mxaws.waitForEC2InstanceArrayAvailable(targetIdArray, action);
+    await waitForEC2InstanceArrayAvailable(targetIdArray, action);
 };
 
 //ASSUMES PREVALIDATION AND PRECONVERSION FROM ON/OFFS TO RESIZES
