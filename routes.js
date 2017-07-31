@@ -1,8 +1,8 @@
 const dbInfRC = "dbPowerDefaults.json";
 const namesRC = "instanceNamePrefixes.json";
 
-const aws   = require("mxawswrappers").awsWrappers;
-const util  = require("./mxcontrolUtil.js");
+const {mxaws}         = require("mxaws");
+const util            = require("./mxcontrolUtil.js");
 const {log, logCatch} = require("./logUtil.js");
 
 const marked                    = require("marked");
@@ -87,8 +87,8 @@ const statusEC2 = exports.statusEC2 = async (targetName, isEnvironment) => {
         return await Promise.all(targetName.map(name => statusEC2(name, isEnvironment)));
 
     const data = (isEnvironment
-        ? await aws.getEC2InstancesByEnvironment([targetName])
-        : await aws.getEC2InstanceByName(targetName))
+        ? await mxaws.getEC2InstancesByEnvironment([targetName])
+        : await mxaws.getEC2InstanceByName(targetName))
             .Reservations.map(res => res.Instances[0]);
 
     const activeInstances = data.filter(datum => datum.State.Name != "terminated");
@@ -115,7 +115,7 @@ const statusRDS = exports.statusRDS = async (targetDB) => {
     if (Array.isArray(targetDB))
         return await Promise.all(targetDB.map(db => statusRDS(db)));
 
-    const data = (await aws.getRDSInstance(util.fixRDSName(targetDB)));
+    const data = (await mxaws.getRDSInstance(util.fixRDSName(targetDB)));
     const dbs = data.DBInstances;
     return dbs.map(db => {
         return {
@@ -181,28 +181,28 @@ const getEC2IdArrayFromNameArray = (nameArray, EC2Instances) => {
 };
 
 const waitForEC2InstanceArrayAvailable = (ec2InstIDArray, action) => {
-    if (downVerbs.has(action)) return aws.waitForEC2InstanceArrayShutdown(ec2InstIDArray);
-    return aws.waitForEC2InstanceArrayStartup(ec2InstIDArray);
+    if (downVerbs.has(action)) return mxaws.waitForEC2InstanceArrayShutdown(ec2InstIDArray);
+    return mxaws.waitForEC2InstanceArrayStartup(ec2InstIDArray);
 }
 
 //ASSUMES PREVALIDATION
 const doEC2ActionAndWait = async (targetIdArray, action, size) => {
     if (rebootVerbs.has(action))
-        await aws.rebootEC2InstancesByInstanceIdArray(targetIdArray);
+        await mxaws.rebootEC2InstancesByInstanceIdArray(targetIdArray);
 
     else if (upVerbs.has(action))
-        await aws.startEC2InstancesByInstanceIdArray(targetIdArray);
+        await mxaws.startEC2InstancesByInstanceIdArray(targetIdArray);
 
     else if (downVerbs.has(action))
-        await aws.stopEC2InstancesByInstanceIdArray(targetIdArray);
+        await mxaws.stopEC2InstancesByInstanceIdArray(targetIdArray);
 
     else if (resizeVerbs.has(action)){
-        await aws.resizeEC2InstancesByInstanceIdArray(targetIdArray, size);
+        await mxaws.resizeEC2InstancesByInstanceIdArray(targetIdArray, size);
         return; //EC2 resize handles its own waiting internally.
     }
 
-    await aws.delay(10);
-    await aws.waitForEC2InstanceArrayAvailable(targetIdArray, action);
+    await mxaws.delay(10);
+    await mxaws.waitForEC2InstanceArrayAvailable(targetIdArray, action);
 };
 
 //ASSUMES PREVALIDATION AND PRECONVERSION FROM ON/OFFS TO RESIZES
@@ -212,13 +212,13 @@ const doRDSActionAndWait = async (dbIdentifier, action, size) => {
         return await Promise.all(dbIdentifier.map(db => doRDSActionAndWait(db, action, size)));
 
     else if (rebootVerbs.has(action))
-        await aws.rebootRDSInstance(dbIdentifier);
+        await mxaws.rebootRDSInstance(dbIdentifier);
 
     else if (resizeVerbs.has(action))
-        await aws.resizeRDSInstance(dbIdentifier, size);
+        await mxaws.resizeRDSInstance(dbIdentifier, size);
 
-    await aws.delay(30);
-    await aws.waitForRDSInstanceAvailable(dbIdentifier);
+    await mxaws.delay(30);
+    await mxaws.waitForRDSInstanceAvailable(dbIdentifier);
 };
 
 
