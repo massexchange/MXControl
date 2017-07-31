@@ -1,6 +1,5 @@
 const AWS   = require("aws-sdk");
 const nconf = require("nconf");
-const util  = require("./mxcontrolUtil.js");
 
 const {downVerbs} = util.possibleActions;
 
@@ -118,10 +117,6 @@ exports.awsWrappers = class awsWrappers{
 
     static rebootRDSInstance(identifier){
         return RDS.rebootDBInstance({"DBInstanceIdentifier":identifier}).promise();
-    }
-
-    static async getRDSInstanceByEnvironment(target){
-        return await this.getRDSInstance(util.fixRDSName(target));
     }
 
     static async resizeEC2Instance(instanceId, size){
