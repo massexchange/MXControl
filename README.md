@@ -160,6 +160,11 @@ Resizes the database `mxenvironment-qa` to `db.t2.medium` every weekday (Monday 
 
 - Times given to Later.js are currently forced to UTC for consistency reasons. Timezones (like NYC aka EST/EDT) can be supported again easily, but time is of the essence.
 
+##### ASSOCIATED REPOSITORIES:
+
+- **MXAWS:** MassExchange's repository of simplified AWS wrappers w/ environment variable based IAM automatic authentication provides all the functionality for
+this code to interact with AWS. It can be found [here](https://github.com/massexchange/MXAWS).
+
 ##### FILES INCLUDED:
 (file extension, then alphabetical order)
 
@@ -177,10 +182,8 @@ Resizes the database `mxenvironment-qa` to `db.t2.medium` every weekday (Monday 
 
 - **logUtil.js:** Utility functions and object definitions specifically centered around printing logs using [winston](https://github.com/winstonjs/winston).
 
-- **MXControl:** The core of functionality in this project. Essentially, a series of wrappers and functions based around the [AWS JS SDK](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/index.html) meant to simplify interactions between a programmer and certain functionality in the AWS API. These wrappers are then routed to, based on ControlTask provided intent, inside **routes.js**. Also includes handling of AWS credentials.
-
 - **controlTaskValidator:** Provides any and all functionality needed for validating ControlTasks, but not for validating specific types of input, like command line arguments. Before any ControlTask can get safely passed into **routes.js's** `runTask`, it must pass through `getControlTaskErrors`. If this function returns no tasks in error, then it is safe to run.
 
 - **mxcontrolUtil.js:** Any other utility functions or constant definitions needed in more than one file, and not covering logging. Maintains dictionaries of `possibleActions` and `possibleSizes`, `tryToParseConfig,` for safely parsing configurations, and other minor functionality.
 
-- **routes.js:** Provides all decisioning functionality, as well as wrappers for getting simplified AWS state object arrays. Primarily, provides `runTask`, which, given a well-formed ControlTask, runs a specified **MXControl** function or series of functions, and `buildPowerFunc`, which returns argument-less functions that call `runTask` with a packaged, well-formed ControlTask.
+- **routes.js:** Provides all decisioning functionality, as well as wrappers for getting simplified AWS state object arrays. Primarily, provides `runTask`, which, given a well-formed ControlTask, runs a specified **[MXAWS](https://github.com/massexchange/MXAWS)**. function or series of functions, and `buildPowerFunc`, which returns argument-less functions that call `runTask` with a packaged, well-formed ControlTask.
