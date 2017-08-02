@@ -74,7 +74,7 @@ exports.runTask = async (controlTask) => {
     }
 
     if (helpVerbs.has(action))
-        console.log(marked(fs.readFileSync("./README.md", "utf-8"))); // eslint-disable-line
+        console.log(marked(fs.readFileSync(`${__dirname}/README.md`, "utf-8"))); // eslint-disable-line
 
 };
 
