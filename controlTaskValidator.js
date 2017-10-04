@@ -55,7 +55,11 @@ const getControlTaskErrors = exports.getControlTaskErrors = async (inputTasks, i
         if ("environment" in task && resizeVerbs.has(action))
             errors.push("Cannot resize an environment -- resize individual instances instead.");
 
-        let isValidSize = possibleSizes.has(size) || possibleSizes.has(`db.${size}`);
+        let isValidSize =
+            possibleSizes.has(size)                      //has size
+            || possibleSizes.has(`db.${size}`)           //has size, user forgot prefix
+            || (size.slice(0,3) == "db." && possibleSizes.has(size.slice(3))); //has size w/ prefix
+
         if (resizeVerbs.has(action) && !isValidSize)
             errors.push(`Size ${size} is not a valid EC2/RDS size!`);
 
