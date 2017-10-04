@@ -58,7 +58,7 @@ const getControlTaskErrors = exports.getControlTaskErrors = async (inputTasks, i
         let isValidSize =
             possibleSizes.has(size)                      //has size
             || possibleSizes.has(`db.${size}`)           //has size, user forgot prefix
-            || (size.slice(0,3) == "db." && possibleSizes.has(size.slice(3))); //has size w/ prefix
+            || (size && size.slice(0,3) == "db." && possibleSizes.has(size.slice(3))); //has size w/ prefix
 
         if (resizeVerbs.has(action) && !isValidSize)
             errors.push(`Size ${size} is not a valid EC2/RDS size!`);
