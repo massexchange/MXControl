@@ -157,7 +157,7 @@ const logAndDoAction = async (targetNames, action, size, isDBop) => {
     log.info(`${isDBop ? "RDS" :"EC2"} '${action}' job on ${targetNames} completed.`);
 };
 
-const buildInitLog = (targetNames, action, size, isDBop) => {
+exports.buildLog = const buildInitLog = (targetNames, action, size, isDBop) => {
     if (rebootVerbs.has(action))
         return `Rebooting: ${targetNames}`;
 
