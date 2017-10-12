@@ -1,7 +1,7 @@
 {
   "name": "mxcontrol",
   "version": "1.0.0",
-  "main": "cli.js",
+  "main": "routes.js",
   "bin": {
     "mxcontrol": "cli.js"
   },
