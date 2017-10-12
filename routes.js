@@ -167,7 +167,7 @@ exports.buildLog = const buildInitLog = (targetNames, action, size, isDBop) => {
 
     else if (!isDBop && !statusVerbs.has(action)){
         const prefix = (possibleActions.upVerbs.has(action)) ? "Starting" : "Stopping";
-        return `${prefix} the following instances: ${targetNames}`;
+        return `${prefix} the following: ${targetNames}`;
     }
 };
 
