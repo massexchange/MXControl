@@ -5,13 +5,24 @@
   "bin": {
     "mxcontrol": "cli.js"
   },
+  "scripts": {
+    "build": "babel ./ -d babelDst"
+  },
   "author": "Frank Camilleri",
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "parserOpts": {
+      "allowReturnOutsideFunction": true
+    }
+  },
   "dependencies": {
     "later": "^1.2.0",
     "marked": "^0.3.6",
     "marked-terminal": "^2.0.0",
     "minimist": "^1.2.0",
-    "mxaws": "github:massexchange/mxaws",
+    "mxaws": "~/Projects/MXAWS",
     "nconf": "^0.8.4",
     "winston": "^2.2.0"
   },
