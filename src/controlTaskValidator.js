@@ -1,4 +1,4 @@
-const dbInfRC = "instanceNamePrefixes.json";
+const dbInfRC = "../config/instanceNamePrefixes.json";
 
 const log    = require(`${__dirname}/logUtil.js`).log;
 const Routes = require("./routes.js");

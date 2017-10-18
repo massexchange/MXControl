@@ -1,5 +1,6 @@
-const sizesRC = "AWSEC2Sizes.json";
-const namesRC = "instanceNamePrefixes.json";
+const sizesRC = "../consts/AWSEC2Sizes.json";
+
+const namesRC = "../config/instanceNamePrefixes.json";
 const fs      = require("fs");
 const log     = require("./logUtil.js").log;
 

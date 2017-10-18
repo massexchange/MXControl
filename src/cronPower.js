@@ -1,4 +1,4 @@
-const tasksRC = "cronTaskList.json";
+const tasksRC = "../config/cronTaskList.json";
 
 const later = require("later");
 

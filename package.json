@@ -1,11 +1,29 @@
 {
   "name": "mxcontrol",
   "version": "1.0.0",
-  "main": "routes.js",
+  "main": "./dist/routes.js",
   "bin": {
-    "mxcontrol": "cli.js"
+    "mxcontrol": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "babel src -d dist",
+    "clean": "rm -rf ./node_modules",
+    "prepare": "npm run build",
+    "reinstall": "rm -rf ./node_modules ./dist && npm install"
   },
   "author": "Frank Camilleri",
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "parserOpts": {
+      "allowReturnOutsideFunction": true
+    }
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  },
   "dependencies": {
     "later": "^1.2.0",
     "marked": "^0.3.6",
@@ -13,7 +31,8 @@
     "minimist": "^1.2.0",
     "mxaws": "github:massexchange/mxaws",
     "nconf": "^0.8.4",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "babel-polyfill": "^6.26.0"
   },
   "preferGlobal": true
 }
