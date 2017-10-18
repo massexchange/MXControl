@@ -1,3 +1,5 @@
+require("babel-polyfill");
+
 const dbInfRC = "dbPowerDefaults.json";
 const namesRC = "instanceNamePrefixes.json";
 

@@ -4,7 +4,7 @@ const fs      = require("fs");
 const log     = require("./logUtil.js").log;
 
 const tryToParseConfig = exports.tryToParseConfig = (filename, isOptional) => {
-    const dir = `${__dirname}/${filename}`;
+    const dir = `${__dirname}/../config/${filename}`;
     try {
         return JSON.parse(fs.readFileSync(`${dir}`, "utf-8"));
     }
