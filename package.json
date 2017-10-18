@@ -7,8 +7,8 @@
   },
   "scripts": {
     "build": "babel src -d dist",
-    "prepare": "npm run build",
-    "clean": "rm -rf ./node_modules"
+    "clean": "rm -rf ./node_modules",
+    "prepare": "npm run build"
   },
   "author": "Frank Camilleri",
   "babel": {
