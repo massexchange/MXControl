@@ -1,10 +1,11 @@
-const sizesRC = "AWSEC2Sizes.json";
-const namesRC = "instanceNamePrefixes.json";
+const sizesRC = "../consts/AWSEC2Sizes.json";
+
+const namesRC = "../config/instanceNamePrefixes.json";
 const fs      = require("fs");
 const log     = require("./logUtil.js").log;
 
 const tryToParseConfig = exports.tryToParseConfig = (filename, isOptional) => {
-    const dir = `${__dirname}/../config/${filename}`;
+    const dir = `${__dirname}/${filename}`;
     try {
         return JSON.parse(fs.readFileSync(`${dir}`, "utf-8"));
     }

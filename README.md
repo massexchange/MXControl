@@ -169,7 +169,7 @@ this code to interact with AWS. It can be found [here](https://github.com/massex
 ##### FILES INCLUDED:
 (file extension, then alphabetical order)
 
-- **config/AWSEC2Sizes.json:** A JSON list of every possible AWS size, built using copy, paste, cat, and underscore-cli. In the future, we may want to fetch this list automatically/update it dynamically. **DO NOT EDIT, unless to update or eliminate.**
+- **consts/AWSEC2Sizes.json:** A JSON list of every possible AWS size, built using copy, paste, cat, and underscore-cli. In the future, we may want to fetch this list automatically/update it dynamically. **DO NOT EDIT, unless to update or eliminate.**
 
 - **config/cronTaskList.json:** A user supplied JSON list of controlTask objects. Read whenever `mxcontrol auto` is invoked. An nonsense example is included by default.
 

@@ -1,7 +1,7 @@
 require("babel-polyfill");
 
-const dbInfRC = "dbPowerDefaults.json";
-const namesRC = "instanceNamePrefixes.json";
+const dbInfRC = "../config/dbPowerDefaults.json";
+const namesRC = "../config/instanceNamePrefixes.json";
 
 const {mxaws}         = require("mxaws");
 const util            = require("./mxcontrolUtil.js");
