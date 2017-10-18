@@ -44,9 +44,8 @@ exports.runTask = async (controlTask) => {
             ? await statusRDS().catch(logCatch)
             : await statusRDS(database).catch(logCatch);
         }
-        console.log(output) //eslint-disable-line
 
-        return;
+        return output;
     }
 
     //Deliberately not an if...else chain. Keep reading.

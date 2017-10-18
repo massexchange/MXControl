@@ -8,7 +8,7 @@ const engageCronTasks       = require(`${__dirname}/cronPower.js`).engageCronTas
 const args                  = require("minimist")(process.argv.slice(2));
 
 const {possibleActions} = require("./mxcontrolUtil.js");
-const {cronTimeVerbs, helpVerbs} = possibleActions;
+const {cronTimeVerbs, helpVerbs, statusVerbs} = possibleActions;
 
 const main = async (minimistArgs) => {
     if (!argumentsAreGood(minimistArgs))
@@ -21,6 +21,9 @@ const main = async (minimistArgs) => {
 
     if (cronTimeVerbs.has(controlTask.action)){
         await engageCronTasks();
+    } else if (statusVerbs.has(controlTask.action)){
+        const status = await runTask(controlTask);
+        console.log(status);
     } else await runTask(controlTask);
 };
 
