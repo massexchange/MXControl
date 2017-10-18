@@ -23,10 +23,11 @@ Well, this does those things.
     - `awsAccessKeyId`: the ID of the aws credential.
     - `awsSecretAccessKey`: the credential's key
     - `awsRegion`: the aws region being operated on.
+- IAM Roles or other automatic sources of AWS credentials will also be checked, should you want to deploy this onto EC2 or plug it into an AWS Lambda function.
 - Run `npm link` to symlink the package to your installation of npm's `PATH` directory, making it invokable from your shell.
 
 #### Part 2: Configure some defaults, and organize your environment naming scheme for MORE CONTROL!
-- First, doublecheck default sizes included in `dbPowerDefaults.json`. Amazon RDS, at least at the time of writing, lacks an off state for their database offering. Because of this lack of an off switch, **all power toggling of RDS instances in MXControl are actually resizes.** If you want to change the default up or down size, this is where you'd do it.
+- First, doublecheck default sizes included in `config/dbPowerDefaults.json`. Amazon RDS, at least at the time of writing, lacks an off state for their database offering. Because of this lack of an off switch, **all power toggling of RDS instances in MXControl are actually resizes.** If you want to change the default up or down size, this is where you'd do it.
 
 - **For singular instance/database jobs, naming scheme configurations isn't important to MXControl whatsoever.** However, if you want to designate a frontend-backend pair of EC2 instances bundled with an RDS database as an 'environment' to be controlled as a single unit together, do the following:
     - change the names of your instances in AWS to follow the scheme `$PREFIX$ENVNAME`, and give any EC2 instances to be contained in the environment the tag `Key: Environment, Value: $ENVNAME.` RDS instances only need to be named, not tagged. This is due to an AWS API eccentricity that may be cleared up at a later time. Then edit `instanceNamePrefixes.json` to include your prefixes.
@@ -168,22 +169,25 @@ this code to interact with AWS. It can be found [here](https://github.com/massex
 ##### FILES INCLUDED:
 (file extension, then alphabetical order)
 
-- **AWSEC2Sizes.json:** A JSON list of every possible AWS size, built using copy, paste, cat, and underscore-cli. In the future, we may want to fetch this list automatically/update it dynamically. **DO NOT EDIT, unless to update or eliminate.**
+- **config/AWSEC2Sizes.json:** A JSON list of every possible AWS size, built using copy, paste, cat, and underscore-cli. In the future, we may want to fetch this list automatically/update it dynamically. **DO NOT EDIT, unless to update or eliminate.**
 
-- **cronTaskList.json:** A user supplied JSON list of controlTask objects. Read whenever `mxcontrol auto` is invoked. An nonsense example is included by default.
+- **config/cronTaskList.json:** A user supplied JSON list of controlTask objects. Read whenever `mxcontrol auto` is invoked. An nonsense example is included by default.
 
-- **dbPowerDefaults.json:** A JSON object designating the desired default sizes for `on` and `off` RDS states. Sensible defaults are included.
+- **config/dbPowerDefaults.json:** A JSON object designating the desired default sizes for `on` and `off` RDS states. Sensible defaults are included.
 
-- **instanceNamePrefixes.json:** A JSON object designating instance name prefixes for your back end, front end, and database instances.
+- **config/instanceNamePrefixes.json:** A JSON object designating instance name prefixes for your back end, front end, and database instances.
 
-- **cli.js:** Arbitrates any activities involving command line interactions with **MXControl**. Essentially, takes command line arguments, passes it to [minimist](https://github.com/substack/minimist), forms the resulting minimist argument object into an unvalidated ControlTask, passes the created task into controlTaskValidator.js to validate the object and get any errors. If there are no errors, passes the validated task to **routes.js's** `runTask` function.
+- **src/cli.js:** Arbitrates any activities involving command line interactions with **MXControl**. Essentially, takes command line arguments, passes it to [minimist](https://github.com/substack/minimist), forms the resulting minimist argument object into an unvalidated ControlTask, passes the created task into controlTaskValidator.js to validate the object and get any errors. If there are no errors, passes the validated task to **routes.js's** `runTask` function.
 
-- **cronPower.js:** Arbitrates any activities involving scheduling tasks via file input (can be easily refactored in the future to accept any JSON input for scheduled jobs) with [Later.js](https://bunkat.github.io/later/index.html) and **MXControl.** It reads the file **cronTaskList.json,** attempts to parse it for JSON, passes said resulting JSON to controlTaskValidator. If there are no errors, it then uses **routes.js's** `buildPowerFunc` to build a `runTask` wrapper function to run over a valid Later.js schedule.
+- **src/cronPower.js:** Arbitrates any activities involving scheduling tasks via file input (can be easily refactored in the future to accept any JSON input for scheduled jobs) with [Later.js](https://bunkat.github.io/later/index.html) and **MXControl.** It reads the file **cronTaskList.json,** attempts to parse it for JSON, passes said resulting JSON to controlTaskValidator. If there are no errors, it then uses **routes.js's** `buildPowerFunc` to build a `runTask` wrapper function to run over a valid Later.js schedule.
 
-- **logUtil.js:** Utility functions and object definitions specifically centered around printing logs using [winston](https://github.com/winstonjs/winston).
+- **src/logUtil.js:** Utility functions and object definitions specifically centered around printing logs using [winston](https://github.com/winstonjs/winston).
 
-- **controlTaskValidator:** Provides any and all functionality needed for validating ControlTasks, but not for validating specific types of input, like command line arguments. Before any ControlTask can get safely passed into **routes.js's** `runTask`, it must pass through `getControlTaskErrors`. If this function returns no tasks in error, then it is safe to run.
+- **src/controlTaskValidator:** Provides any and all functionality needed for validating ControlTasks, but not for validating specific types of input, like command line arguments. Before any ControlTask can get safely passed into **routes.js's** `runTask`, it must pass through `getControlTaskErrors`. If this function returns no tasks in error, then it is safe to run.
 
-- **mxcontrolUtil.js:** Any other utility functions or constant definitions needed in more than one file, and not covering logging. Maintains dictionaries of `possibleActions` and `possibleSizes`, `tryToParseConfig,` for safely parsing configurations, and other minor functionality.
+- **src/mxcontrolUtil.js:** Any other utility functions or constant definitions needed in more than one file, and not covering logging. Maintains dictionaries of `possibleActions` and `possibleSizes`, `tryToParseConfig,` for safely parsing configurations, and other minor functionality.
 
-- **routes.js:** Provides all decisioning functionality, as well as wrappers for getting simplified AWS state object arrays. Primarily, provides `runTask`, which, given a well-formed ControlTask, runs a specified **[MXAWS](https://github.com/massexchange/MXAWS)**. function or series of functions, and `buildPowerFunc`, which returns argument-less functions that call `runTask` with a packaged, well-formed ControlTask.
+- **src/routes.js:** Provides all decisioning functionality, as well as wrappers for getting simplified AWS state object arrays. Primarily, provides `runTask`, which, given a well-formed ControlTask, runs a specified **[MXAWS](https://github.com/massexchange/MXAWS)**. function or series of functions, and `buildPowerFunc`, which returns argument-less functions that call `runTask` with a packaged, well-formed ControlTask.
+
+#### Then what the hell is this "dist" directory?
+- This project is set up to be automatically babel-transpiled on npm install for compatibility reasons. Files in the "dist" directory are the code that will actually be called and running. If you want to make and test edits to the code, you need to run `npm run build` to retranspile the module. For more information on `npm run build` and other npm scripts this project uses, see `package.json.`
