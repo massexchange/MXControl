@@ -170,6 +170,8 @@ const logAndDoAction = async (targetNames, action, size, isDBop) => {
         const prefix = (possibleActions.upVerbs.has(action)) ? "Starting" : "Stopping";
         return `${prefix} the following: ${targetNames}`;
     }
+    else if (statusVerbs.has(action))
+        return "Fetching status...";
 };
 
 const getEC2IdArrayFromNameArray = (nameArray, EC2Instances) => {
