@@ -1,4 +1,4 @@
 {
 	"dbDefaultUp":"db.r3.large",
-	"dbDefaultDown":"db.t2.micro"
+	"dbDefaultDown":"db.t2.small"
 }
