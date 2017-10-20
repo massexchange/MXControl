@@ -18,13 +18,13 @@ const tryToParseConfig = exports.tryToParseConfig = (filename, isOptional) => {
     }
 };
 
-const upVerbs       = new Set(["on","up","start"]);
-const downVerbs     = new Set(["down","off","stop"]);
+const upVerbs       = new Set(["on","up","start","summon","rise","arise","awaken"]);
+const downVerbs     = new Set(["down","off","stop","banish","kill","unsummon"]);
 const rebootVerbs   = new Set(["restart","reboot"]);
 const resizeVerbs   = new Set(["resize"]);
 const helpVerbs     = new Set(["help"]);
 const cronTimeVerbs = new Set(["auto", "cron"]);
-const statusVerbs   = new Set(["status", "info"]);
+const statusVerbs   = new Set(["status", "info", "scry", "check"]);
 
 let protoPossibleActions = {
     upVerbs:        upVerbs,
