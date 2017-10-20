@@ -172,6 +172,8 @@ const logAndDoAction = async (targetNames, action, size, isDBop) => {
     }
     else if (statusVerbs.has(action))
         return "Fetching status...";
+    else
+        return `${targetNames}/${action}/${size}/${isDBop} job started.`;
 };
 
 const getEC2IdArrayFromNameArray = (nameArray, EC2Instances) => {
