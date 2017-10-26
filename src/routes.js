@@ -23,6 +23,7 @@ const { upVerbs, downVerbs, rebootVerbs,
 //consider this function this file's "main"
 //the other exported functions are the status funcs: statusEC2, statusRDS, and statusEnv
 exports.runTask = async (controlTask) => {
+    let tasksToRun = [];
     let {instance, environment, database, action} = controlTask;
     if (statusVerbs.has(action)){
         // If this is only a status call, just deal with it
@@ -64,19 +65,29 @@ exports.runTask = async (controlTask) => {
     if (database) {
         if (!Array.isArray(database)) database = [database];
         let {action, size} = convertDBControlTaskToResizeTask(controlTask);
-        await Promise.all(database.map(db =>
-            logAndDoAction(db, action, size, true).catch(logCatch)));
+        tasksToRun = tasksToRun.concat(
+            database.map(db =>
+                logAndDoAction(db, action, size, true)
+                .catch(logCatch)
+            )
+        );
     }
 
     if (instance) {
         if (!Array.isArray(instance)) instance = [instance];
         let {action, size} = controlTask;
-        await logAndDoAction(instance, action, size).catch(logCatch);
+        tasksToRun = tasksToRun.concat(
+            instance.map(instance =>
+                logAndDoAction(instance, action, size)
+                .catch(logCatch)
+            )
+        );
     }
 
     if (helpVerbs.has(action))
         console.log(marked(fs.readFileSync(`${__dirname}/README.md`, "utf-8"))); // eslint-disable-line
 
+    await Promise.all(tasksToRun);
 };
 
 exports.buildPowerFunc = (controlTask) => {
@@ -177,6 +188,7 @@ const logAndDoAction = async (targetNames, action, size, isDBop) => {
 };
 
 const getEC2IdArrayFromNameArray = (nameArray, EC2Instances) => {
+    if (!Array.isArray(nameArray)) nameArray = [nameArray];
     return nameArray.map(name => {
         return EC2Instances.reduce((goodID, inst) => {
             if (inst.InstanceName == name) goodID = inst.InstanceId;
