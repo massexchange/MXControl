@@ -78,7 +78,7 @@ exports.runTask = async (controlTask) => {
         let {action, size} = controlTask;
         tasksToRun = tasksToRun.concat(
             instance.map(instance =>
-                logAndDoAction(instance, action, size, true)
+                logAndDoAction(instance, action, size)
                 .catch(logCatch)
             )
         );
