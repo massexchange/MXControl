@@ -188,6 +188,7 @@ const logAndDoAction = async (targetNames, action, size, isDBop) => {
 };
 
 const getEC2IdArrayFromNameArray = (nameArray, EC2Instances) => {
+    if (!Array.isArray(nameArray)) nameArray = [nameArray];
     return nameArray.map(name => {
         return EC2Instances.reduce((goodID, inst) => {
             if (inst.InstanceName == name) goodID = inst.InstanceId;
