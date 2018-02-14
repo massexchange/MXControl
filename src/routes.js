@@ -129,13 +129,20 @@ const statusRDS = exports.statusRDS = async (targetDB) => {
 
     const data = (await mxaws.getRDSInstance(util.fixRDSName(targetDB)));
     const dbs = data.DBInstances;
-    return dbs.map(db => {
+
+    return dbs.map(({
+        DBInstanceIdentifier: InstanceName,
+        DBInstanceStatus: InstanceState,
+        Endpoint,
+        DBInstanceClass: InstanceSize
+    }) => {
+        const InstanceAddress = Endpoint ? Endpoint.Address : undefined;
         return {
-            InstanceName:       db.DBInstanceIdentifier,
-            InstanceState:      db.DBInstanceStatus,
-            InstanceAddress:    db.Endpoint.Address,
-            InstanceSize:       db.DBInstanceClass,
-        };
+            InstanceName,
+            InstanceState,
+            InstanceAddress,
+            InstanceSize
+        }
     });
 };
 
