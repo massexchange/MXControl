@@ -82,7 +82,7 @@ const getControlTaskErrors = exports.getControlTaskErrors = async (inputTasks, i
         if (isTaskTargetAWildcard(task))
             return;
 
-        else if ("environment" in task && task.environment != true){
+        else if (task.environment && task.environment != true){ //truthy, but not true
 
             if (Array.isArray(task.environment))
                 return task.environment.reduce((agg, curr) => {
@@ -98,7 +98,7 @@ const getControlTaskErrors = exports.getControlTaskErrors = async (inputTasks, i
             }
         }
 
-        else if ("instance" in task || "database" in task){
+        else if (task.instance || task.database){
             const target = task.instance || task.database;
             const allTargets = EC2Instances.concat(RDSInstances);
 
