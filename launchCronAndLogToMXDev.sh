@@ -3,7 +3,12 @@ MXDEV_URL=$(cat ~/MXControl/config/MXDEV_URL)
 
 function postToLambda {
     message="$(echo $1 | sed "s/^.*]: /**AUTO: **/")"
-    curl --silent -X POST -d "{\"source\": \"MXControl\",\"message\":\"$message\"}" "$MXDEV_URL"
+
+    curl -d "{
+        \"source\": \"MXControl\",
+        \"message\":\"$message\"
+    }" "$MXDEV_URL"
+
     echo $1
 }
 
